@@ -1,4 +1,3 @@
-<center><iframe height=480 width=270 src="art/m3u8Downloader_2.mp4" allowfullscreen></iframe></center>
 > 前段时间由于业务需要，需要做一个视频下载的功能，包括m3u8视频和mp4视频等，于是在Github上找了几个相关的下载库，发现要不是太久没有更新了，要不就是不太符合我们的需求，所以干脆就手撸了一个`M3U8Downloader`
 
 `Github`地址：[https://github.com/xuqingquan1995/M3U8Downloader](https://github.com/xuqingquan1995/M3U8Downloader)
