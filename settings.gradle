@@ -1,0 +1,2 @@
+include ':app', ':m3u8downloader'
+rootProject.name='M3U8Downloader'

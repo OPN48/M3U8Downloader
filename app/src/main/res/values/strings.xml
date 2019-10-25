@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">M3U8Downloader</string>
+    <string name="wait_download">等待下载</string>
+    <string name="pause">暂停</string>
+    <string name="already_paused">已暂停</string>
+    <string name="btn_download">下载</string>
+    <string name="go_on">继续</string>
+    <string name="prepareing">准备中</string>
+    <string name="retry">重试</string>
+    <string name="unknow_movie">未知影片</string>
+    <string name="need_permission_tips">请授予需要的权限</string>
+    <string name="please_input_download_address">请输入下载地址</string>
+    <string name="already_download">已经在下载列表了</string>
+    <string name="new_download">新建下载</string>
+    <string name="ok">确定</string>
+    <string name="cancle">取消</string>
+</resources>
