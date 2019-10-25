@@ -15,26 +15,30 @@ import java.io.File
 /**
  * Created by 许清泉 on 2019-10-14 16:51
  */
-object M3U8Downloader {
+internal object M3U8Downloader {
     private val downloadList = arrayListOf<String>()
     private const val TAG = "---M3U8Downloader---"
 
+    //清楚所有任务
     fun clear() {
         downloadList.clear()
     }
 
+    //批下载
     fun bunchDownload(path: File) {
         val config = FileDownloader.getConfigFile(path)
         Log.d(TAG, "config==>${config.readText()}")
         val entity = parseJsonToVideoDownloadEntity(config.readText())
-        if (entity == null) {
+        if (entity == null) {//获取到的实体类为空的忽略
             Log.d(TAG, "entity==null${config.readText()}")
             return
         }
+        //如果状态是删除的就忽略
         if (entity.status == DELETE) {
             path.deleteRecursively()
             return
         }
+        //避免重复进入下载
         if (downloadList.contains(entity.originalUrl)) {
             Log.d(TAG, "contains")
             return

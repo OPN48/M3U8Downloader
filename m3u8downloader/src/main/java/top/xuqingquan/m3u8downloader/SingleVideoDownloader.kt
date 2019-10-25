@@ -13,14 +13,16 @@ import java.io.File
 /**
  * Created by 许清泉 on 2019-10-16 09:54
  */
-object SingleVideoDownloader {
+internal object SingleVideoDownloader {
     private val downloadList = arrayListOf<String>()
     private const val TAG = "SingleVideoDownloader"
 
+    //清理所有任务
     fun clear() {
         downloadList.clear()
     }
 
+    //下载任务的初始化
     fun initConfig(entity: VideoDownloadEntity): File {
         val config = FileDownloader.getConfigFile(entity.originalUrl)
         if (!config.exists()) {
@@ -37,13 +39,14 @@ object SingleVideoDownloader {
         return config
     }
 
+    //下载任务的入口
     fun fileDownloader(entity: VideoDownloadEntity) {
         val path = FileDownloader.getDownloadPath(entity.originalUrl)
-        if (entity.status == DELETE) {
+        if (entity.status == DELETE) {//如果是删除状态的则忽略
             path.deleteRecursively()
             return
         }
-        if (downloadList.contains(entity.originalUrl)) {
+        if (downloadList.contains(entity.originalUrl)) {//避免重复下载
             Log.d(TAG, "contains---${entity.originalUrl},${entity.name}")
             return
         }

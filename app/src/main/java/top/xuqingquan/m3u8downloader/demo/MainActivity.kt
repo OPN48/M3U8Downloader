@@ -31,9 +31,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initListView()
         initListWithPermissionCheck()
+        //接收进度通知
         FileDownloader.downloadCallback.observe(this, Observer {
             onProgress(it)
         })
+        //新建下载
         add.setOnClickListener {
             newDownload()
         }
@@ -50,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
     fun initList() {
-        thread {
+        thread {//在线程中处理，防止ANR
             FileDownloader.getBaseDownloadPath().listFiles().forEach {
                 val file = File(it, "video.config")
                 if (file.exists()) {
@@ -76,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 adapter.notifyDataSetChanged()
             }
             videoList.sort()
-
+            //依次添加下载队列
             videoList.filter { it.status == DOWNLOADING }.forEach {
                 FileDownloader.downloadVideo(it)
             }

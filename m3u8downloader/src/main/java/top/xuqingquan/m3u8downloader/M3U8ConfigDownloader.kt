@@ -13,11 +13,12 @@ import java.io.File
 /**
  * Created by 许清泉 on 2019-10-15 22:13
  */
-object M3U8ConfigDownloader {
+internal object M3U8ConfigDownloader {
 
     private val downloadList = arrayListOf<String>()
     private val TAG = "M3U8ConfigDownloader"
 
+    //清楚所有任务
     fun clear() {
         downloadList.clear()
     }

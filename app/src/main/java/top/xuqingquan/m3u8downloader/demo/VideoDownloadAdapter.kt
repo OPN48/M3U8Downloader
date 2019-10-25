@@ -28,6 +28,9 @@ class VideoDownloadAdapter(private val list: MutableList<VideoDownloadEntity>) :
 
     override fun getItemCount() = list.size
 
+    /**
+     * 避免出现整个item闪烁
+     */
     override fun onBindViewHolder(holder: ViewHolder, position: Int, payloads: MutableList<Any>) {
         if (payloads.isNullOrEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
@@ -47,6 +50,9 @@ class VideoDownloadAdapter(private val list: MutableList<VideoDownloadEntity>) :
         private val url = view.findViewById<TextView>(R.id.url)
         private val download = view.findViewById<TextView>(R.id.download)
 
+        /**
+         * 设置数据
+         */
         @SuppressLint("SetTextI18n")
         fun setData(data: VideoDownloadEntity?) {
             if (data == null) {
@@ -71,6 +77,9 @@ class VideoDownloadAdapter(private val list: MutableList<VideoDownloadEntity>) :
             updateProgress(data)
         }
 
+        /**
+         * 进度更新
+         */
         @SuppressLint("SetTextI18n")
         fun updateProgress(data: VideoDownloadEntity) {
             if (data.originalUrl.endsWith(".m3u8") || data.status == COMPLETE) {
@@ -85,6 +94,7 @@ class VideoDownloadAdapter(private val list: MutableList<VideoDownloadEntity>) :
             speed.text =
                 "${DecimalFormat("#.##%").format(data.currentProgress)}|${data.currentSpeed}"
             val context = view.context
+            //状态逻辑处理
             when (data.status) {
                 NO_START -> {
                     download.setTextColor(ContextCompat.getColor(context, R.color.blue))

@@ -6,7 +6,7 @@ import java.security.MessageDigest
 /**
  * Created by 许清泉 on 2019-10-14 15:23
  */
-fun md5(plainText: String): String {
+internal fun md5(plainText: String): String {
     //定义一个字节数组
     lateinit var secretBytes: ByteArray
     try {
