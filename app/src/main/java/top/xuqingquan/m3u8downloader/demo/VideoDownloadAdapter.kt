@@ -8,8 +8,9 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import top.xuqingquan.m3u8downloader.FileDownloader
-import top.xuqingquan.m3u8downloader.entity.*
+import top.xuqingquan.m3u8downloader.AriaFileDownload
+import top.xuqingquan.m3u8downloader.entity.VideoDownloadEntity
+import top.xuqingquan.m3u8downloader.entity.VideoDownloadEntity.*
 import java.text.DecimalFormat
 
 /**
@@ -106,11 +107,7 @@ class VideoDownloadAdapter(private val list: MutableList<VideoDownloadEntity>) :
                     currentSize.isVisible = false
                     currentSize.setText(R.string.wait_download)
                     download.setOnClickListener {
-                        if (data.startDownload != null) {
-                            data.startDownload!!.invoke()
-                        } else {
-                            FileDownloader.downloadVideo(data)
-                        }
+                        AriaFileDownload.downloadVideo(data)
                     }
                 }
                 DOWNLOADING -> {
@@ -120,8 +117,7 @@ class VideoDownloadAdapter(private val list: MutableList<VideoDownloadEntity>) :
                     download.isVisible = true
                     download.setText(R.string.pause)
                     download.setOnClickListener {
-                        data.downloadContext?.stop()
-                        data.downloadTask?.cancel()
+                        AriaFileDownload.getInstance().stopTask(data)
                     }
                     download.setTextColor(ContextCompat.getColor(context, R.color.white))
                     download.background =
@@ -135,11 +131,7 @@ class VideoDownloadAdapter(private val list: MutableList<VideoDownloadEntity>) :
                     download.isVisible = true
                     download.setText(R.string.go_on)
                     download.setOnClickListener {
-                        if (data.startDownload != null) {
-                            data.startDownload!!.invoke()
-                        } else {
-                            FileDownloader.downloadVideo(data)
-                        }
+                        AriaFileDownload.downloadVideo(data)
                     }
                     speed.isVisible = true
                     speed.setText(R.string.already_paused)
@@ -156,11 +148,7 @@ class VideoDownloadAdapter(private val list: MutableList<VideoDownloadEntity>) :
                     currentSize.setText(R.string.wait_download)
                     download.isVisible = true
                     download.setOnClickListener {
-                        if (data.startDownload != null) {
-                            data.startDownload!!.invoke()
-                        } else {
-                            FileDownloader.downloadVideo(data)
-                        }
+                        AriaFileDownload.downloadVideo(data)
                     }
                     download.setTextColor(ContextCompat.getColor(context, R.color.blue))
                     download.background =
@@ -173,11 +161,7 @@ class VideoDownloadAdapter(private val list: MutableList<VideoDownloadEntity>) :
                     download.isVisible = true
                     download.setText(R.string.retry)
                     download.setOnClickListener {
-                        if (data.startDownload != null) {
-                            data.startDownload!!.invoke()
-                        } else {
-                            FileDownloader.downloadVideo(data)
-                        }
+                        AriaFileDownload.downloadVideo(data)
                     }
                     download.setTextColor(ContextCompat.getColor(context, R.color.white))
                     download.background =

@@ -13,8 +13,9 @@ import kotlinx.android.synthetic.main.activity_main.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.RuntimePermissions
-import top.xuqingquan.m3u8downloader.FileDownloader
+import top.xuqingquan.m3u8downloader.AriaFileDownload
 import top.xuqingquan.m3u8downloader.entity.*
+import top.xuqingquan.m3u8downloader.entity.VideoDownloadEntity.*
 import java.io.File
 import kotlin.concurrent.thread
 
@@ -31,8 +32,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         initListView()
         initListWithPermissionCheck()
+        //必须先进行注册
+        AriaFileDownload.getInstance().register(this)
         //接收进度通知
-        FileDownloader.downloadCallback.observe(this, Observer {
+        AriaFileDownload.downloadCallback.observe(this, Observer {
             onProgress(it)
         })
         //新建下载
@@ -52,8 +55,9 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.WRITE_EXTERNAL_STORAGE
     )
     fun initList() {
-        thread {//在线程中处理，防止ANR
-            FileDownloader.getBaseDownloadPath().listFiles().forEach {
+        thread {
+            //在线程中处理，防止ANR
+            AriaFileDownload.getBaseDownloadPath().listFiles().forEach {
                 val file = File(it, "video.config")
                 if (file.exists()) {
                     val text = file.readText()
@@ -80,13 +84,13 @@ class MainActivity : AppCompatActivity() {
             videoList.sort()
             //依次添加下载队列
             videoList.filter { it.status == DOWNLOADING }.forEach {
-                FileDownloader.downloadVideo(it)
+                AriaFileDownload.downloadVideo(it)
             }
             videoList.filter { it.status == PREPARE }.forEach {
-                FileDownloader.downloadVideo(it)
+                AriaFileDownload.downloadVideo(it)
             }
             videoList.filter { it.status == NO_START }.forEach {
-                FileDownloader.downloadVideo(it)
+                AriaFileDownload.downloadVideo(it)
             }
         }
     }
@@ -119,9 +123,7 @@ class MainActivity : AppCompatActivity() {
                 videoList[index].currentProgress = entity.currentProgress
                 videoList[index].fileSize = entity.fileSize
                 videoList[index].tsSize = entity.tsSize
-                videoList[index].downloadContext = entity.downloadContext
-                videoList[index].downloadTask = entity.downloadTask
-                videoList[index].startDownload = entity.startDownload
+                videoList[index].taskId = entity.taskId
                 adapter.notifyItemChanged(index, 0)
                 break
             }
@@ -150,11 +152,13 @@ class MainActivity : AppCompatActivity() {
                 } else {
                     url.substring(url.lastIndexOf("/") + 1)
                 }
-                val entity = VideoDownloadEntity(url, name)
+                val entity = VideoDownloadEntity(
+                    url, name, "", "", "", 0, 0, 0.0, "", 0, System.currentTimeMillis(), NO_START
+                )
                 entity.toFile()
                 videoList.add(0, entity)
                 adapter.notifyItemInserted(0)
-                FileDownloader.downloadVideo(entity)
+                AriaFileDownload.downloadVideo(entity)
             }
             .setNegativeButton(R.string.cancle) { dialog, _ ->
                 dialog.dismiss()

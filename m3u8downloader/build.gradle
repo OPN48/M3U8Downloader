@@ -22,17 +22,13 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.50"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.61"
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.core:core-ktx:1.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    compileOnly 'com.liulishuo.okdownload:okdownload:1.0.5'
-    //如果需要断点续传的话需要依赖
-    compileOnly 'com.liulishuo.okdownload:sqlite:1.0.5'
-    //如果使用okhttp下载的话需要依赖以下两个
-    compileOnly 'com.liulishuo.okdownload:okhttp:1.0.5'
-    //兼容Android 4.4 需要使用低版本
-    compileOnly 'com.squareup.okhttp3:okhttp:3.12.2'
+    implementation 'com.arialyy.aria:core:3.7.10'
+    annotationProcessor 'com.arialyy.aria:compiler:3.7.10'
+    implementation 'com.arialyy.aria:m3u8Component:3.7.10'
 }
