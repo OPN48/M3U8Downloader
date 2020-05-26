@@ -20,6 +20,12 @@ except:
     os.system('sudo pip3 install requests')
     import requests
 
+try:
+    import urllib.parse
+except:
+    os.system('sudo pip3 install urllib')
+    import urllib.parse
+
 # crypto模块校验
 try:
     from Crypto.Cipher import AES
@@ -76,12 +82,22 @@ class myThread(threading.Thread):
                 queueLock.release()
                 # 获取文件名，方便映射m3u8
                 fuleName = pdUrl.rsplit("/", 1)[-1]
+                fuleName = fuleName.rsplit("?", 1)[0]
+                # print('♦♦♦♦♦♦♦♦♦♦♦♦♦♦♦♦♦♦♦♦')
+                # print(pdUrl,fuleName)
+                # time.sleep(3)
                 if fuleName not in os.listdir(self.download_path):
                     resCount=0
                     print('%s%s准备下载%s 保存为 %s' % (missStr,threadName, pdUrl, fuleName))
                     while resCount<=repeatMax:
                         try:
-                            res = requests.get(pdUrl)
+                            # 修改request模式为 url + params ,支持超长request
+                            p = urllib.parse.urlparse(pdUrl)
+                            u = p.scheme + '://' + p.netloc + p.path
+                            pTemp = urllib.parse.parse_qs(p.query)
+                            for i in pTemp:
+                                pTemp[i] = pTemp[i][0]
+                            res = requests.get(url=u,params=pTemp)
                             resC=res.content
                             break
                         except:
@@ -185,7 +201,7 @@ class M3u8PParsing():
                     all_content = requests.get(url).text
         fileLine = all_content.split("\n")
         unknow = True
-        time=0.0
+        t=0.0
         for index, line in enumerate(fileLine):  # 第二层
             if "#EXT-X-KEY" in line:  # 找解密Key
                 methodPos = line.find("METHOD")
@@ -207,8 +223,8 @@ class M3u8PParsing():
                 # ts时长
                 length = float(re.findall(r'EXTINF:(.*?),', line.strip())[0])
                 # 进度时长time
-                beginTime=round(time,3)
-                time += length
+                beginTime=round(t,3)
+                t += length
                 # url拼接模块
                 if fileLine[index + 1][:1]=='/':
                     pdUrl=host+fileLine[index + 1]
@@ -216,7 +232,8 @@ class M3u8PParsing():
                     pdUrl = fileLine[index + 1]
                 else:
                     pdUrl = url.rsplit("/", 1)[0] + "/" + fileLine[index + 1]  # 拼出ts片段的URL
-                print(pdUrl)
+                #去除url回车
+                pdUrl = pdUrl.strip()
                 self.tsDic[beginTime]={'url':pdUrl,'length':length,'file':fileLine[index + 1]}
         if unknow:
             raise BaseException("未找到对应的下载链接")
