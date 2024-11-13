@@ -1,14 +1,9 @@
+`Github`地址：https://github.com/OPN48/M3U8Downloader
 
-
-![gif](art/67wyj-xpx8t.gif)
-> 前段时间由于业务需要，需要做一个视频下载的功能，包括m3u8视频和mp4视频等，于是在Github上找了几个相关的下载库，发现要不是太久没有更新了，要不就是不太符合我们的需求，所以干脆就手撸了一个`M3U8Downloader`
-
-`Github`地址：[https://github.com/xuqingquan1995/M3U8Downloader](https://github.com/xuqingquan1995/M3U8Downloader)
-
-`Gitee`地址：[https://gitee.com/xuqingquan/M3U8Downloader](https://gitee.com/xuqingquan/M3U8Downloader)
-
-> 其他版本说明：java版本在java分支，额外提供python3版本在master分支python3文件夹，目前是支持多线程下载，默认5线程，下载完成后自动合并为mp4并删除ts文件，帮助：python3 pyM3u8Download.py
-
+> 其他版本说明：java版本在java分支，额外提供python3版本在master分支python3文件夹，目前是支持多线程下载，默认5线程，下载完成后自动合并为mp4并删除ts文件，帮助：
+```
+python3 pyM3u8Download.py
+```
 ## M3U8文件结构
 开始撸代码之前，先预备一下相关知识，M3U8视频其实主要就一个文件，文件里面写明了视频片段ts的地址，我们获得这个m3u8文件就可以通过文件内的内容，分析出世纪的ts，然后下载相对应的ts文件，就可以做到下载m3u8视频了
 ### 最直接的m3u8文件
